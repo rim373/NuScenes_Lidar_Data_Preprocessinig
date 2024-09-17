@@ -20,6 +20,11 @@ This is the result of reading the point cloud data from one of the samples.
 ![redoc](https://github.com/rim373/ransac/blob/main/000.png)
 ### 2. Voxelization
 Voxel Grid Downsampling is applied to reduce the number of points, which speeds up processing and removes noise. A 3D voxel grid is created, and points are subsampled based on the centroid within each voxel.
+A voxel (short for volume element) is the 3D equivalent of a pixel in 2D images. It represents a value on a regular grid in three-dimensional space. Just as a pixel is a single point of information in a 2D image, a voxel is a small cubic unit of space in a 3D structure.
+In the context of point clouds or 3D data:
+Voxelization is the process of dividing a 3D space into discrete, uniform cubes (voxels) to represent the volume of objects.
+Each voxel can store information about the points within it, such as position, color, or density, which helps in simplifying the data or improving processing efficiency.
+![redoc](https://github.com/rim373/ransac/blob/main/voxel_by_size.png)
 Key steps for voxelization:
 1. Define a voxel size (smaller sizes for more detail, larger sizes for faster processing).
 2 .Divide the 3D space into voxels.
@@ -53,7 +58,8 @@ The following function contributes to the filtering process.
 ```sh 
 dbscan(outlier_cloud, eps=1.0, min_points=10)
 ```
-![redoc](https://github.com/rim373/ransac/blob/main/seg.png)
+This figure explains how the clustering works.
+![redoc](https://github.com/rim373/ransac/blob/main/culstur.png)
 ### 6. 3D Visualization and Storage
 The processed point clouds can be visualized in 3D, and stored in the LiDAR data format based on a boolean control parameter.
 ```sh 
