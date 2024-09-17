@@ -16,7 +16,8 @@ import open3d as o3d
 ```sh 
 get_point_cloud(directory,filname)
 ```
-![redoc](https://github.com/rim373/ransac/blob/main/seg.png)
+This is the result of reading the point cloud data from one of the samples.
+![redoc](https://github.com/rim373/ransac/blob/main/000.png)
 ###2. Voxelization
 Voxel Grid Downsampling is applied to reduce the number of points, which speeds up processing and removes noise. A 3D voxel grid is created, and points are subsampled based on the centroid within each voxel.
 Key steps for voxelization:
@@ -28,8 +29,8 @@ The following function contributes to the filtering process.
 ```sh 
 voxalisation (pcd)
 ```
-
-![redoc](https://github.com/rim373/ransac/blob/main/seg.png)
+This is an example from the KITTI dataset explaining how the voxel size affects the data.
+![redoc](https://github.com/rim373/ransac/blob/main/voxel_by_size.png)
 ###3. Filtering the Point Cloud
 -We filter the point cloud along the z-axis to remove points below a specific threshold (z<100). This step ensures we retain useful information while excluding irrelevant ground-level points.
 -Horizontal filtering is avoided to preserve essential object data
@@ -43,7 +44,8 @@ The following function contributes to the filtering process.
 ```sh 
 ransac(point_cloud, distance_threshold=0.1, ransac_n=3, num_iterations=100000)
 ```
-![redoc](https://github.com/rim373/ransac/blob/main/seg.png)
+This is an example of NuScenes data output after applying the RANSAC algorithm.
+![redoc](https://github.com/rim373/ransac/blob/main/00000.png)
 ###5. DBSCAN Clustering 
 DBSCAN (Density-Based Spatial Clustering of Applications with Noise) is used to group nearby points into clusters. This helps in distinguishing different objects within the point cloud after ground removal.
 Points that do not belong to any dense clusters are treated as noise
@@ -102,9 +104,10 @@ Once you’ve exported the annotations, you can load them into your Python scrip
 ####9. Advanced Features
 -AI-assisted annotation: Segments.ai provides some AI-based tools that can assist in speeding up annotation tasks. These tools can help auto-detect objects or ground regions based on your initial annotations.
 -Quality Assurance (QA): Use the QA tab to validate and review the accuracy of annotations, ensuring consistency and correctness.
-
-![redoc](https://github.com/rim373/ransac/blob/main/seg.png)
-![redoc](https://github.com/rim373/ransac/blob/main/seg.png)
+These are pictures of sample data before annotation, after annotation, and the annotated part.
+![redoc](https://github.com/rim373/ransac/blob/main/label1.png)
+![redoc](https://github.com/rim373/ransac/blob/main/label2.png)
+![redoc](https://github.com/rim373/ransac/blob/main/label3.png)
 
 
 
