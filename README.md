@@ -16,6 +16,7 @@ import open3d as o3d
 ```sh 
 get_point_cloud(directory,filname)
 ```
+![redoc](https://github.com/rim373/ransac/blob/main/seg.png)
 ###2. Voxelization
 Voxel Grid Downsampling is applied to reduce the number of points, which speeds up processing and removes noise. A 3D voxel grid is created, and points are subsampled based on the centroid within each voxel.
 Key steps for voxelization:
@@ -27,6 +28,8 @@ The following function contributes to the filtering process.
 ```sh 
 voxalisation (pcd)
 ```
+
+![redoc](https://github.com/rim373/ransac/blob/main/seg.png)
 ###3. Filtering the Point Cloud
 -We filter the point cloud along the z-axis to remove points below a specific threshold (z<100). This step ensures we retain useful information while excluding irrelevant ground-level points.
 -Horizontal filtering is avoided to preserve essential object data
@@ -40,6 +43,7 @@ The following function contributes to the filtering process.
 ```sh 
 ransac(point_cloud, distance_threshold=0.1, ransac_n=3, num_iterations=100000)
 ```
+![redoc](https://github.com/rim373/ransac/blob/main/seg.png)
 ###5. DBSCAN Clustering 
 DBSCAN (Density-Based Spatial Clustering of Applications with Noise) is used to group nearby points into clusters. This helps in distinguishing different objects within the point cloud after ground removal.
 Points that do not belong to any dense clusters are treated as noise
@@ -47,6 +51,7 @@ The following function contributes to the filtering process.
 ```sh 
 dbscan(outlier_cloud, eps=1.0, min_points=10)
 ```
+![redoc](https://github.com/rim373/ransac/blob/main/seg.png)
 ###6. 3D Visualization and Storage
 The processed point clouds can be visualized in 3D, and stored in the LiDAR data format based on a boolean control parameter.
 ```sh 
@@ -55,184 +60,51 @@ visualize_point_clouds(*point_clouds, show=True, save=False, output_folder='outp
 ###7. Annotation and Model Evaluation
 To evaluate the quantitative performance of the model, it is necessary to annotate the ground points, as the NuScenes dataset does not provide explicit ground annotations.
 We used the platform Segments.ai for manual annotation.
-![redoc](https://github.com/rim373/introfastapi/blob/main/pics/redoc.png)
+![redoc](https://github.com/rim373/ransac/blob/main/seg.png)
 With Segments.ai, images are uploaded, and regions corresponding to the ground are manually annotated. These annotations are then integrated with the LiDAR data for further evaluation.
-⚡ FastAPI for the Python backend API.
-💾 PostgreSQL as the SQL database.
 
-
-
-
-```sh 
-pip install fastapi
-```
-
-
-
-
-
-Next let’s incorporate a sqlite database to store our question and response list items. The workhorse package we’ll use for database operations is sqlalchemy. sqlalchemy is powerful but complex.
-
-First, let’s install sqlalchemy with 
-```sh 
-pip install sqlalchemy 
-```
-this is the database table that i wanted to create:
-
-Questions Table:
-
-- **id**: A unique identifier for each question. (Primary Key)
-- **Content**: The text of the question.
-- **Responses**: {
-  - **id**: A unique identifier for each response. (Primary Key)
-  - **response_text**: The text of the response.
-  - **Is_correct**: A boolean indicating if the response is correct (`TRUE`) or incorrect (`FALSE`).}
-
-
-## Problem and Solution
-
-### Problem with SQLite
-
-**Issue:** SQLite does not support storing dictionaries directly within a table.
-
-**Solution:** Migration to PostgreSQL, which provides more advanced relational database features.
-
-### Problem with PostgreSQL
-
-**Issue:** PostgreSQL also does not support storing dictionaries directly within a table.
-
-**Solution:** Creation of two related tables to represent the data structure effectively.
-
-
-
-
-## Database Schema
-
-### Tables
-
-#### `Questions` Table
-
-- **id**: A unique identifier for each question. (Primary Key)
-- **Content**: The text of the question.
-
-
-
-
-#### `Responses` Table
-
-- **id**: A unique identifier for each response. (Primary Key)
-- **question_id**: A foreign key linking each response to a question in the `Questions` table.
-- **response_text**: The text of the response.
-- **Is_correct**: A boolean indicating if the response is correct (`TRUE`) or incorrect (`FALSE`).
-
-### SQL Code
-
-To create the tables in PostgreSQL, use the following SQL commands:
-
-```sql
--- Create the Questions table
-CREATE TABLE Questions (
-    id SERIAL PRIMARY KEY,
-    content TEXT 
-);
-
--- Create the Responses table
-CREATE TABLE Responses (
-    id SERIAL PRIMARY KEY,
-    question_id INTEGER REFERENCES Questions(id) ON DELETE CASCADE,
-    response TEXT ,
-    is_correct BOOLEAN 
-);
-```
-
-## CRUD (Create, Read, Update, Delete):
- operations for managing questions and their associated responses. It is built using FastAPI and interacts with a PostgreSQL database.
-```sh 
-# Initialize app
-app = FastAPI() 
-```
-```sh 
-fastapi dev main.py
-```
-![redoc](https://github.com/rim373/introfastapi/blob/main/pics/redoc.png)
-
-##Interactive API Documentation
-
-![docs](https://github.com/rim373/introfastapi/blob/main/pics/docs.png)
-
-
-Here's a brief description for each function :
-
----
-
-### API Endpoints
-
-#### Create a New Question
-
-![docs](https://github.com/rim373/introfastapi/blob/main/pics/post.png)
-
-**Description:** 
-This endpoint creates a new question in the database. It receives a `QuestionRequest` object containing the question content and associated responses. It adds the question to the database, commits the transaction, and then associates each response with the newly created question before committing again. It returns the created question object.
-
----
-
-#### Read All Questions
-![docs](https://github.com/rim373/introfastapi/blob/main/pics/affichetot.png)
-
-**Description:** 
-This endpoint retrieves all questions from the database. It queries for all questions and their associated responses, then constructs a list of `QuestionRequest` objects with the content and choices. It returns this list.
-
----
-
-#### Read a Single Question by ID
-![docs](https://github.com/rim373/introfastapi/blob/main/pics/affiche.png)
-
-**Description:** 
-This endpoint retrieves a specific question by its ID. It queries the database for the question and its associated responses. If found, it returns the question content along with a dictionary of responses. If the question does not exist, it raises a 404 HTTPException.
-
----
-
-#### Update a Question's Content
-![docs](https://github.com/rim373/introfastapi/blob/main/pics/updataqueston.png)
-
-**Description:** 
-This endpoint updates the content of a question identified by its ID. It finds the question in the database, updates its content, and commits the changes. If the question does not exist, it raises a 404 HTTPException. It returns the updated question.
-
----
-
-#### Update a Response for a Question
-![docs](https://github.com/rim373/introfastapi/blob/main/pics/update%20response.png)
-
-**Description:** 
-This endpoint updates a specific response associated with a question. It locates the question and response in the database, updates the response text, and commits the change. If the question or response is not found, it raises a 404 HTTPException. It returns the updated response information.
-
----
-
-#### Delete a Question
-![docs](https://github.com/rim373/introfastapi/blob/main/pics/del%20question.png)
-
-**Description:** 
-This endpoint deletes a question by its ID. It removes the question and all associated responses from the database. If the question does not exist, it raises a 404 HTTPException. It returns a 204 No Content status upon successful deletion.
-
----
-
-#### Delete a Specific Response
-![docs](https://github.com/rim373/introfastapi/blob/main/pics/delate%20respnse.png)
-
-**Description:** 
-This endpoint deletes a specific response associated with a question. It locates the question and the response to be deleted, removes the response from the database, and commits the change. If the question or response is not found, it raises a 404 HTTPException. It returns a confirmation message upon successful deletion.
-
-
-
-
-
-
-
-
-
-
-
-
+Here’s a step-by-step guide to help you get started with Segments.ai for annotating your dataset:
+
+####1. Create an Account on Segments.ai
+-Go to Segments.ai and sign up for an account.
+-After logging in, you’ll have access to the dashboard where you can create new projects, upload datasets, and begin annotating.
+####2. Create a New Project
+-Once you're logged in, click on Create New Project.
+-Choose the type of project you want to create (e.g., image segmentation, bounding boxes).
+-Provide a name and description for your project, then click Create Project.
+####3. Upload Your Dataset
+-In your project dashboard, click on Datasets and then select Upload Dataset.
+-You can upload images or point clouds in supported formats.
+-If working with point clouds, you can export your LiDAR data as images or projections of the point cloud onto 2D planes.
+
+
+####4. Creating Annotation Tasks
+-After the dataset is uploaded, click Create Tasks.
+-Tasks can be assigned to yourself or to team members for annotation.
+-Choose Segmentation or Bounding Box depending on the nature of your annotation.
+####5. Annotating the Dataset
+-Once your tasks are set, go to the Annotate tab.
+-The interface provides various tools like polygon selection, brush tools, and object labels to mark regions in the image.
+-Select a label (e.g., “Ground”, “Vehicle”, etc.) and start drawing or brushing over the areas you want to annotate.
+
+
+####6. Navigating the Annotation Tools
+-Brush Tool: Use this tool to paint over areas you want to label as ground or other objects.
+-Polygon Tool: Use this for more precise annotations, especially for defining object boundaries.
+-Zoom & Pan: You can zoom in for more detailed annotations and pan around the image using the mouse or keyboard shortcuts.
+-Undo/Redo: Easily correct any mistakes with undo/redo options.
+####7. Export the Annotations
+-Once the annotation is complete, you can export the annotated data.
+-Segments.ai allows exporting in several formats (COCO, Pascal VOC, etc.) depending on your requirements.
+-Download the labeled dataset and integrate it with your point cloud processing workflow.
+####8. Integrating Annotations with Your Code
+Once you’ve exported the annotations, you can load them into your Python script for further use.
+####9. Advanced Features
+-AI-assisted annotation: Segments.ai provides some AI-based tools that can assist in speeding up annotation tasks. These tools can help auto-detect objects or ground regions based on your initial annotations.
+-Quality Assurance (QA): Use the QA tab to validate and review the accuracy of annotations, ensuring consistency and correctness.
+
+![redoc](https://github.com/rim373/ransac/blob/main/seg.png)
+![redoc](https://github.com/rim373/ransac/blob/main/seg.png)
 
 
 
