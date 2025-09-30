@@ -16,8 +16,7 @@ import open3d as o3d
 ```sh 
 get_point_cloud(directory,filname)
 ```
-This is the result of reading the point cloud data from one of the samples.
-![redoc](https://github.com/rim373/ransac/blob/main/000.png)
+
 ### 2. Voxelization
 Voxel Grid Downsampling is applied to reduce the number of points, which speeds up processing and removes noise. A 3D voxel grid is created, and points are subsampled based on the centroid within each voxel.
 A voxel (short for volume element) is the 3D equivalent of a pixel in 2D images. It represents a value on a regular grid in three-dimensional space. Just as a pixel is a single point of information in a 2D image, a voxel is a small cubic unit of space in a 3D structure.
@@ -115,6 +114,7 @@ These are pictures of sample data before annotation, after annotation, and the a
 ![redoc](https://github.com/rim373/ransac/blob/main/label3.png)
 ![redoc](https://github.com/rim373/ransac/blob/main/label1.png)
 ![redoc](https://github.com/rim373/ransac/blob/main/label2.png)
+
 
 
 
