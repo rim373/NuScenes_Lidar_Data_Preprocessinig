@@ -23,7 +23,7 @@ A voxel (short for volume element) is the 3D equivalent of a pixel in 2D images.
 In the context of point clouds or 3D data:
 Voxelization is the process of dividing a 3D space into discrete, uniform cubes (voxels) to represent the volume of objects.
 Each voxel can store information about the points within it, such as position, color, or density, which helps in simplifying the data or improving processing efficiency.
-![redoc](https://github.com/rim373/ransac/raw/main/voxel.png)
+![redoc](https://github.com/rim373/NuScenes_Lidar_Data_Preprocessinig/tree/main/doc/voxel.png)
 
 ** Key steps for voxelization: **
 1. Define a voxel size (smaller sizes for more detail, larger sizes for faster processing).
@@ -114,6 +114,7 @@ These are pictures of sample data before annotation, after annotation, and the a
 ![redoc](https://github.com/rim373/ransac/blob/main/label3.png)
 ![redoc](https://github.com/rim373/ransac/blob/main/label1.png)
 ![redoc](https://github.com/rim373/ransac/blob/main/label2.png)
+
 
 
 
