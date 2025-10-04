@@ -23,7 +23,7 @@ A voxel (short for volume element) is the 3D equivalent of a pixel in 2D images.
 In the context of point clouds or 3D data:
 Voxelization is the process of dividing a 3D space into discrete, uniform cubes (voxels) to represent the volume of objects.
 Each voxel can store information about the points within it, such as position, color, or density, which helps in simplifying the data or improving processing efficiency.
-![redoc](https://github.com/rim373/NuScenes_Lidar_Data_Preprocessinig/tree/main/doc/voxel.png)
+![redoc](https://github.com/rim373/NuScenes_Lidar_Data_Preprocessinig/blob/main/doc/voxel.png)
 
 ** Key steps for voxelization: **
 1. Define a voxel size (smaller sizes for more detail, larger sizes for faster processing).
@@ -35,7 +35,7 @@ The following function contributes to the filtering process.
 voxalisation (pcd)
 ```
 This is an example from the KITTI dataset explaining how the voxel size affects the data.
-![redoc](https://github.com/rim373/ransac/blob/main/voxel_by_size.png)
+![redoc]https://github.com/rim373/NuScenes_Lidar_Data_Preprocessinig/blob/main/doc/voxel_by_size.png)
 ### 3. Filtering the Point Cloud
 -We filter the point cloud along the z-axis to remove points below a specific threshold (z<100). This step ensures we retain useful information while excluding irrelevant ground-level points.
 -Horizontal filtering is avoided to preserve essential object data
@@ -50,7 +50,7 @@ The following function contributes to the filtering process.
 ransac(point_cloud, distance_threshold=0.1, ransac_n=3, num_iterations=100000)
 ```
 This is an example of NuScenes data output after applying the RANSAC algorithm.
-![redoc](https://github.com/rim373/ransac/blob/main/00000.png)
+![redoc]https://github.com/rim373/NuScenes_Lidar_Data_Preprocessinig/blob/main/doc/00000.png)
 ### 5. DBSCAN Clustering 
 DBSCAN (Density-Based Spatial Clustering of Applications with Noise) is used to group nearby points into clusters. This helps in distinguishing different objects within the point cloud after ground removal.
 Points that do not belong to any dense clusters are treated as noise
@@ -59,7 +59,7 @@ The following function contributes to the filtering process.
 dbscan(outlier_cloud, eps=1.0, min_points=10)
 ```
 This figure explains how the clustering works.
-![redoc](https://github.com/rim373/ransac/blob/main/culstur.png)
+![redoc]https://github.com/rim373/NuScenes_Lidar_Data_Preprocessinig/blob/main/doc/culstur.png)
 ### 6. 3D Visualization and Storage
 The processed point clouds can be visualized in 3D, and stored in the LiDAR data format based on a boolean control parameter.
 ```sh 
@@ -111,9 +111,10 @@ Once you’ve exported the annotations, you can load them into your Python scrip
 -AI-assisted annotation: Segments.ai provides some AI-based tools that can assist in speeding up annotation tasks. These tools can help auto-detect objects or ground regions based on your initial annotations.
 -Quality Assurance (QA): Use the QA tab to validate and review the accuracy of annotations, ensuring consistency and correctness.
 These are pictures of sample data before annotation, after annotation, and the annotated part.
-![redoc](https://github.com/rim373/ransac/blob/main/label3.png)
-![redoc](https://github.com/rim373/ransac/blob/main/label1.png)
-![redoc](https://github.com/rim373/ransac/blob/main/label2.png)
+![redoc]https://github.com/rim373/NuScenes_Lidar_Data_Preprocessinig/blob/main/doc/label3.png)
+![redoc]https://github.com/rim373/NuScenes_Lidar_Data_Preprocessinig/blob/main/doc/label1.png)
+![redoc]https://github.com/rim373/NuScenes_Lidar_Data_Preprocessinig/blob/main/doc/label2.png)
+
 
 
 
